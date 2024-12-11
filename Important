@@ -1,0 +1,49 @@
+Running the Environment
+To run the sandbox environment:
+
+Build the Docker Image:
+
+Run the following command in the directory containing your Dockerfile:
+bash
+Copy code
+docker build -t sandbox-env .
+Run the Python Script:
+
+Run the sandbox.py script with the path to the suspicious file you want to execute:
+bash
+Copy code
+python3 sandbox.py /path/to/suspicious-file.exe
+Optionally, use Docker Compose:
+
+Build and run the containers using Docker Compose:
+bash
+Copy code
+docker-compose up --build
+Step 5: Logging Activity with Sysmon (Optional)
+If you want to use Sysmon to log detailed system activity during the execution of the file inside the container:
+
+Configure Sysmon:
+
+Download and install Sysmon inside the container (already done in the Dockerfile).
+You can set it up by copying a Sysmon configuration file and starting Sysmon when you launch the container.
+Configure the Sysmon Start Command:
+
+Modify the ENTRYPOINT in the Dockerfile to start Sysmon before executing the file:
+Dockerfile
+Copy code
+ENTRYPOINT ["sysmon", "-accepteula", "-c", "/path/to/sysmon-config.xml", "&&", "python3", "sandbox.py"]
+Step 6: Example of Running an Executable
+Once the container is set up and the Python script is ready, you can run it with any file you want to analyze. For example, to execute malware.exe:
+
+bash
+Copy code
+python3 sandbox.py /path/to/malware.exe
+The container will:
+
+Execute the file inside the isolated environment.
+Log system activity if Sysmon is installed and configured.
+Generate a report (you can further extend the script to generate logs or reports).
+Key Points:
+Isolation: The file is executed inside a Docker container, ensuring no interaction with your host system.
+Monitoring: You can configure monitoring tools like Sysmon to capture events such as file changes, process creations, and network activity.
+Logging: You can enhance the script to log system events or send the logs to a file for later analysis.

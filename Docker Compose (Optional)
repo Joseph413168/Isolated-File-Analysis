@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  sandbox:
+    build: .
+    container_name: sandbox-container
+    volumes:
+      - ./sandbox.py:/app/sandbox.py
+    environment:
+      - DEBIAN_FRONTEND=noninteractive
+    command: python3 /app/sandbox.py /app/suspicious-file.exe
